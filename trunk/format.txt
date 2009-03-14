@@ -1,0 +1,50 @@
+==============================================================================
+todo.txt format
+
+Empty lines are simply discarded. Same for lines starting with two or more dashes (---). Both rules make formatting the file easier. Dashed lines also allow for comments.
+
+A line is composed thusly:
+
+INDENT ID TITLE ||| {PRIORITY} <MINUTES_DONE/MINUTES_TODO> [START_DATETIME-ENDDATE_TIME] COMMENTS
+
+Only ID and TITLE are required, the rest of the line is entirely optional (the '|' character is optional if no further parameters/comments are provided).
+
+The '|' character only needs to appear once, but for reading the todo.txt file, it's useful to put more than one, for visual cue. The cleaning script replaces it by '|||'. DO NOT FORGET THE '|', as then the other parameters will be taken as part of the title.
+
+INDENT is just tabs, to indicate hierarchy.
+
+Instead of ID, you can use #, which will then be replaced by an appropriate ID, when making edits.
+
+In TITLE, +tags and @contexts can be used, which are then useful to query items. There's no enforced syntax here: the queries are done plain text anyway. TITLE must not contain the caracter "|" (pipe), since it delineates the start of the other parameters.
+
+The PRIORITY, MINUTES..., ...DATETIME blocks must come in that order. Anything coming after them is treated as COMMENTS, ie. freeform notes related to the entry. COMMENTS cannot extend on multiple lines.
+
+PRIORITY is a number from 0 to 5 (inclusive).
+
+If the <MINUTES_DONE/MINUTES_TODO> block appears, it must contain the '</>' characters, but the MINUTES... are both optional. MINUTES_DONE, TODO are expressed as integers.
+
+Datetimes are expressed in the form YYYY/mm/dd HH:MM (the HH:MM part is optional, and if the year is not supplied, it will default to the current year when cleanchanges is run). Month is 1-based (ie. january = 01). Hours are on 24 hours.
+
+That format may seem a bit twisted, but it allows almost any characters in the TITLE and COMMENTS fields.
+
+==============================================================================
+count.txt format
+
+Just an integer for the next ID.
+
+==============================================================================
+records.txt format
+
+Records of time spent on activities, based (but not necessarily) on TODO items.
+
+ID|ID|...|ID	TITLE|TITLE|...|TITLE|	[START_DATETIME - END_DATETIME]	DURATION	EXTRA_INFO
+
+The | lists refer to hierarchies in the TODO file (remember, that character cannot be used in the title). Principle is: all records contain the full hierarchy (all ancestors), so if the hierarchy changes in the future, the log entries are not renderer meaningless.
+
+Dates are of the same format as for todo.txt. If START_DATETIME is not available, it may be left blank. END_DATETIME must at least contain a date. DURATION must be provided.
+
+ID may be replaced by # if we just don't care and/or if we want to add info manually.
+
+EXTRA_INFO is freeform (anything except newline). Might be used for task-specific record formats in the future.
+
+
